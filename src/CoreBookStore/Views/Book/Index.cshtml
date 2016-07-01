@@ -1,0 +1,36 @@
+﻿@model CoreBookStore.Models.BookViewModel
+
+@{
+    ViewBag.Title = "Books";
+}
+
+<h2>Books</h2>
+
+<p>
+    @Html.ActionLink("Adicionar", "Create", "", new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Books)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <span class="pull-right"><a href="@Url.Action("Edit", new { id = item.Id })"> <span class="glyphicon glyphicon-pencil"></span></a></span>
+            </td>
+            <td>
+                <span><a href="@Url.Action("Delete", new { id = item.Id })"> <span class="glyphicon glyphicon-trash"></span></a></span>
+            </td>
+        </tr>
+    }
+
+</table>
