@@ -77,5 +77,30 @@ namespace CoreBookStore.Controllers
 
             return View(book);
         }
+
+        public ActionResult Delete(int id)
+        {
+            Book book = dbContext.Books.SingleOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            
+            return View(book);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmado([Bind("Id", "Title")] Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Books.Remove(book);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(book);
+        }
     }
 }

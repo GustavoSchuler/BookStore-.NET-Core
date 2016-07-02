@@ -79,14 +79,27 @@ namespace CoreBookStore.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            Category category = dbContext.Categories.SingleOrDefault(b => b.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+            return View(category);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmado(int id)
+        public ActionResult DeleteConfirmado([Bind("Id", "Description")] Category category)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                dbContext.Categories.Remove(category);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
         }
     }
 }
