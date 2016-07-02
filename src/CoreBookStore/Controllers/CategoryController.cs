@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CoreBookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CoreBookStore.Controllers
 {
@@ -49,16 +50,31 @@ namespace CoreBookStore.Controllers
             return View(category);
         }
 
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View();
+            Category category = dbContext.Categories.SingleOrDefault(b => b.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.IdCategory = new SelectList(dbContext.Categories, "Description");
+            return View(category);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit([Bind("Id", "Description")] Category category)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                dbContext.Categories.Update(category);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
         }
 
         public ActionResult Delete(int id)

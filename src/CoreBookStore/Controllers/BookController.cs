@@ -50,14 +50,18 @@ namespace CoreBookStore.Controllers
 
             return View(book);
         }
-[HttpGet]
-        public async Task<ActionResult> Edit(int id)
-        {
-            var books = await dbContext.Books.Where(b => b.Id == id)
-                .Take(1)
-                .ToArrayAsync();
 
-            return View(new BookViewModel { Books = books });
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            Book book = dbContext.Books.SingleOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.IdCategory = new SelectList(dbContext.Categories, "Id", "Description", book.IdCategory);
+            return View(book);
         }
 
         [HttpPost]
