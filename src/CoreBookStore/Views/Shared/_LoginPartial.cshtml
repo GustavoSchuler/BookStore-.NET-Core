@@ -2,7 +2,13 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
-{
+{	
+	<ul class="nav navbar-nav">
+		<li>@Html.ActionLink("Categories", "Index", "Category")</li>
+	</ul>
+	<ul class="nav navbar-nav">
+		<li>@Html.ActionLink("Books", "Index", "Book")</li>
+	</ul>
     <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>

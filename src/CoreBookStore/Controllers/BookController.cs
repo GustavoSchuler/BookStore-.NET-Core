@@ -4,51 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CoreBookStore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreBookStore.Controllers
 {
     public class BookController : Controller
     {
+        private WebsiteDbContext dbContext;
+
+        public BookController(WebsiteDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
-        }
+            var books = await dbContext.Books.OrderByDescending(b => b.Id)
+                .Take(10)
+                .ToArrayAsync();
 
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Book book)
-        {
-            return View();
-        }
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Book book)
-        {
-            return View();
-        }
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmado(int id)
-        {
-            return View();
+            return View(new BookViewModel { Books = books });
         }
     }
 }

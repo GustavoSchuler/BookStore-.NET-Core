@@ -40,9 +40,9 @@
   },
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
-      "version": "1.0.0-preview1-final",
+      "version": "1.0.0-*",
       "imports": "portable-net45+wp80+win8+wpa81+dnxcore50"
     }
   },
-  "version": "1.0.0-preview1-final"
+  "version": "1.0.0-*"
 }
