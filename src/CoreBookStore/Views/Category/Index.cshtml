@@ -1,0 +1,36 @@
+﻿@model CoreBookStore.Models.CategoryViewModel
+
+@{
+    ViewBag.Title = "BookStore";
+}
+
+<h3>Categories</h3>
+
+<p>
+    <input type="button" class="btn btn-primary" title="Novo" value="AddNew" onclick="location.href='@Url.Action("Create")'" />
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Description
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Categories) {
+        <tr>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                <span class="pull-right"><a href="@Url.Action("Edit", new { id = item.Id })"> <span class="glyphicon glyphicon-pencil"></span></a></span>
+            </td>
+            <td>
+                <span><a href="@Url.Action("Delete", new { id = item.Id })"> <span class="glyphicon glyphicon-trash"></span></a></span>
+            </td>
+        </tr>
+}
+
+</table>
+

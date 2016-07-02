@@ -4,17 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CoreBookStore.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreBookStore.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
-        [HttpGet]
-        public ActionResult Index()
+        private WebsiteDbContext dbContext;
+
+        public CategoryController(WebsiteDbContext dbContext)
         {
-            return View();
+            this.dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Index()
+        {
+            var categories = await dbContext.Categories.OrderByDescending(b => b.Id)
+                .Take(10)
+                .ToArrayAsync();
+
+            return View(new CategoryViewModel { Categories = categories });
+        }
+
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -22,9 +37,16 @@ namespace CoreBookStore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category category)
+        public ActionResult Create([Bind("Description")] Category category)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                dbContext.Categories.Add(category);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            
+            return View(category);
         }
 
         public ActionResult Edit(int id)
