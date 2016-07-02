@@ -50,5 +50,28 @@ namespace CoreBookStore.Controllers
 
             return View(book);
         }
+[HttpGet]
+        public async Task<ActionResult> Edit(int id)
+        {
+            var books = await dbContext.Books.Where(b => b.Id == id)
+                .Take(1)
+                .ToArrayAsync();
+
+            return View(new BookViewModel { Books = books });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind("Id", "Title", "IdCategory")] Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Books.Update(book);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(book);
+        }
     }
 }
