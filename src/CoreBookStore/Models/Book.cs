@@ -15,7 +15,7 @@ namespace CoreBookStore.Models
 
         public int IdCategory { get; set; }
 
-        public virtual Category category { get; set; }
+        public virtual Category Category { get; set; }
 
         [StringLengthAttribute(100)]
         public string Title { get; set; }
