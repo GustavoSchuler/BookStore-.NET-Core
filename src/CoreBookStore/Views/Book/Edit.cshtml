@@ -1,0 +1,38 @@
+﻿@model CoreBookStore.Models.BookViewModel
+
+@{
+    ViewBag.Title = "BookStore";
+}
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Book</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Books[0].Id" />
+        <div class="form-group">
+            <label asp-for="Books[0].Title" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Books[0].Title" class="form-control" />
+                <span asp-validation-for="Books[0].Title" class="text-danger" />
+            </div>
+		</div>
+		<div class="form-group">
+			<label asp-for="Books[0].IdCategory" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Books[0].IdCategory" class="form-control" />
+                <span asp-validation-for="Books[0].IdCategory" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
+
