@@ -7,7 +7,7 @@
 <h3>Books</h3>
 
 <p>
-    @Html.ActionLink("Add new", "Create", "" ,new { @class = "btn btn-primary" } )
+    <input type="button" class="btn btn-primary" title="Novo" value="AddNew" onclick="location.href='@Url.Action("Create")'" />
 </p>
 
 <table class="table">

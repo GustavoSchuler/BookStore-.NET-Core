@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CoreBookStore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreBookStore.Controllers
 {
+    [Authorize]
     public class BookController : Controller
     {
         private WebsiteDbContext dbContext;
@@ -28,6 +31,26 @@ namespace CoreBookStore.Controllers
         }
 
         [HttpGet]
+        public ActionResult Create()
+        {
+            ViewBag.IdCategory = new SelectList(dbContext.Categories, "Id", "Description");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind("Title", "IdCategory")] Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Books.Add(book);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(book);
+        }
+[HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
             var books = await dbContext.Books.Where(b => b.Id == id)
